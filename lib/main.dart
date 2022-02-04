@@ -6,6 +6,7 @@ import 'package:sary/app/common/widget/shared_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sary/app/modules/item/view/item_view.dart';
 import 'package:sary/app/modules/transaction/view/transaction_view.dart';
+import 'package:sary/app/modules/transaction_detail/view/transaction_detail_view.dart';
 import 'package:sary/app/routes/app_pages.dart';
 
 void main() {
@@ -42,6 +43,6 @@ class App extends StatelessWidget {
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
-    return const ItemView();
+    return const TransactionDetailView();
   }
 }

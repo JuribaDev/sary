@@ -64,3 +64,37 @@ var cardStatusTextStyle = TextStyle(
   fontStyle: FontStyle.normal,
   color: const Color(0xff404040),
 );
+
+
+// transaction details screen
+var transactionDetailTitleTextStyle = TextStyle(
+  fontFamily: 'futura',
+  fontWeight: FontWeight.w400,
+  fontSize: 19.sp,
+  fontStyle: FontStyle.normal,
+  color: const Color(0xff404040),
+);
+
+var transactionDetailSubtitleTextStyle = TextStyle(
+  fontFamily: 'futura',
+  fontWeight: FontWeight.w400,
+  fontSize: 16.sp,
+  fontStyle: FontStyle.normal,
+  color: const Color(0xff404040),
+);
+
+var transactionDetailPriceAndQuantityTextStyle = TextStyle(
+  fontFamily: 'futura',
+  fontWeight: FontWeight.w700,
+  fontSize: 19.sp,
+  fontStyle: FontStyle.normal,
+  color: const Color(0xff404040),
+);
+
+var transactionDetailDatetimeTextStyle = TextStyle(
+  fontFamily: 'futura',
+  fontWeight: FontWeight.w700,
+  fontSize: 19.sp,
+  fontStyle: FontStyle.normal,
+  color: const Color(0xff404040),
+);
