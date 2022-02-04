@@ -8,7 +8,7 @@ final ColorScheme lightColorScheme = ColorScheme.fromSwatch().copyWith(
   secondaryContainer: const Color(0xFF5044B8),
   surface: const Color(0xffF8F8F8),
   background: const Color(0xffF8F8F8),
-  error: const Color(0xFFB00020),
+  error: const Color(0xffF8F8F8),
   onPrimary: Colors.white,
   onSecondary: Colors.white,
   onSurface: Colors.black,

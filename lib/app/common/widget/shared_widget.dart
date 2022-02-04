@@ -10,11 +10,12 @@ class SharedWidget {
   static appBar({required String title, Widget? action}) {
     return AppBar(
       backgroundColor: Colors.white,
+      foregroundColor: Colors.black,
       actions: action == null
           ? null
           : [
               Padding(
-                padding: EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 8.0.w),
                 child: action,
               )
             ],
@@ -92,8 +93,7 @@ class SharedWidget {
                   height: 62.h,
                   child: ElevatedButton.icon(
                     style: ButtonStyle(
-                      // backgroundColor: MaterialStateProperty.all<Color>(
-                      //     const Color(0xff5044B8)),
+                     
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),

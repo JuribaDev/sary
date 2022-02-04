@@ -6,6 +6,7 @@ import 'package:sary/app/common/widget/shared_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sary/app/modules/item/view/item_view.dart';
 import 'package:sary/app/modules/transaction/view/transaction_view.dart';
+import 'package:sary/app/routes/app_pages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,13 +15,14 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sary Test',
       theme: lightTheme,
+      // initialRoute: RouteGenerator.INITIAL,
       home: const App(),
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }
@@ -40,6 +42,6 @@ class App extends StatelessWidget {
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
-    return const TransactionView();
+    return const ItemView();
   }
 }

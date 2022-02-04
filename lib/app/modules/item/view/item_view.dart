@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sary/app/common/style/text_style.dart';
 import 'package:sary/app/common/widget/shared_widget.dart';
+import 'package:sary/app/routes/app_routes.dart';
 
 class ItemView extends StatelessWidget {
   const ItemView({Key? key}) : super(key: key);
@@ -14,8 +15,8 @@ class ItemView extends StatelessWidget {
       ),
       body: SharedWidget.floatingButton(
         isOneButton: true,
-        onFirstButtonPressed: () {},
-        onSecondButtonPressed: () {},
+        onFirstButtonPressed: () =>
+            Navigator.pushNamed(context, Routes.TRANSACTION),
         child: ListView.builder(
           itemCount: 50,
           itemBuilder: (context, i) {
