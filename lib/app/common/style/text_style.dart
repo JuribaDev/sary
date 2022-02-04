@@ -98,3 +98,11 @@ var transactionDetailDatetimeTextStyle = TextStyle(
   fontStyle: FontStyle.normal,
   color: const Color(0xff404040),
 );
+
+var transactionDetailStatusTextStyle = TextStyle(
+  fontFamily: 'futura',
+  fontWeight: FontWeight.w700,
+  fontSize: 14.sp,
+  fontStyle: FontStyle.normal,
+  color: const Color(0xff404040),
+);

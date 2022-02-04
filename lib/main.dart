@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sary/app/common/colors/light_theme_color.dart';
-import 'package:sary/app/common/style/text_style.dart';
-import 'package:sary/app/common/widget/shared_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sary/app/modules/item/view/item_view.dart';
-import 'package:sary/app/modules/transaction/view/transaction_view.dart';
-import 'package:sary/app/modules/transaction_detail/view/transaction_detail_view.dart';
 import 'package:sary/app/routes/app_pages.dart';
 
 void main() {
@@ -21,7 +16,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sary Test',
       theme: lightTheme,
-      // initialRoute: RouteGenerator.INITIAL,
       home: const App(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
@@ -43,6 +37,6 @@ class App extends StatelessWidget {
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
-    return const TransactionDetailView();
+    return const ItemView();
   }
 }
