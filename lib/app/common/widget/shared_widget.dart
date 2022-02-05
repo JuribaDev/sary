@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
@@ -7,7 +8,7 @@ import 'package:sary/app/common/style/text_style.dart';
 
 class SharedWidget {
   //shared appbar
-  static appBar({required String title, Widget? action}) {
+  static PreferredSizeWidget appBar({required String title, Widget? action}) {
     return AppBar(
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
@@ -29,7 +30,7 @@ class SharedWidget {
   }
 
   //shared IOS or android  alert dialog
-  static alertDialog(
+  static void alertDialog(
       {required BuildContext context,
       required String title,
       required VoidCallback onYesPressed,
@@ -74,7 +75,7 @@ class SharedWidget {
 
   //shared floating buttons
 
-  static floatingButton(
+  static Widget floatingButton(
       {required Widget child,
       required bool isOneButton,
       required VoidCallback onFirstButtonPressed,
@@ -93,7 +94,6 @@ class SharedWidget {
                   height: 62.h,
                   child: ElevatedButton.icon(
                     style: ButtonStyle(
-                     
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
@@ -171,10 +171,35 @@ class SharedWidget {
     );
   }
 
-  static box([double? w, double? h]) {
+  //shared SizedBox
+  static Widget box([double? w, double? h]) {
     return SizedBox(
       width: w,
       height: h,
     );
   }
+
+  //shared bottom sheet widget
+  static void bottomSheet(
+      {required BuildContext context, required Widget child}) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        context: context,
+        builder: (context) => child);
+  }
+
+  //shared loading indicator
+  static Widget loadingInicator() {
+    return Platform.isIOS
+        ? const CupertinoActivityIndicator()
+        : const CircularProgressIndicator();
+  }
+
+  
 }
+
+
+
+
+

@@ -65,7 +65,6 @@ var cardStatusTextStyle = TextStyle(
   color: const Color(0xff404040),
 );
 
-
 // transaction details screen
 var transactionDetailTitleTextStyle = TextStyle(
   fontFamily: 'futura',
@@ -105,4 +104,13 @@ var transactionDetailStatusTextStyle = TextStyle(
   fontSize: 14.sp,
   fontStyle: FontStyle.normal,
   color: const Color(0xff404040),
+);
+
+//toast message textstyle
+var toastMeassgeTextStyle = TextStyle(
+  fontFamily: 'futura',
+  fontWeight: FontWeight.w700,
+  fontSize: 14.sp,
+  fontStyle: FontStyle.normal,
+  color: Colors.white,
 );

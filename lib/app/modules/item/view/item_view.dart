@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sary/app/common/style/text_style.dart';
@@ -15,19 +16,21 @@ class ItemView extends StatelessWidget {
       ),
       body: SharedWidget.floatingButton(
         isOneButton: true,
-        onFirstButtonPressed: () =>
-            Navigator.pushNamed(context, Routes.TRANSACTION),
+        onFirstButtonPressed: () {
+
+        },
         child: ListView.builder(
           itemCount: 50,
           itemBuilder: (context, i) {
             return GestureDetector(
-              onTap: ()=> Navigator.of(context).pushNamed(Routes.TRANSACTION),
+              onTap: () => Navigator.of(context).pushNamed(Routes.TRANSACTION),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
                 child: Container(
                   width: 375.w,
                   height: 125.h,
-                  padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(
