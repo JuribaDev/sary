@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sary/app/common/native_plugn/custom_toast_message.dart';
 import 'package:sary/app/common/style/text_style.dart';
 import 'package:sary/app/common/widget/shared_widget.dart';
 import 'package:sary/app/routes/app_routes.dart';
@@ -17,7 +17,7 @@ class ItemView extends StatelessWidget {
       body: SharedWidget.floatingButton(
         isOneButton: true,
         onFirstButtonPressed: () {
-
+          SaryToastMessage.showToast(message: 'hi from flutter');
         },
         child: ListView.builder(
           itemCount: 50,
