@@ -78,7 +78,7 @@ class _ItemFormState extends State<ItemFormView> {
                     child: Column(
                       children: [
                         SharedWidget.box(0, 80.h),
-                        ItemSharedWidget.textForm(
+                        SharedWidget.textForm(
                           controller: nameController,
                           labelText: 'Name',
                           validator: (val) {
@@ -94,7 +94,7 @@ class _ItemFormState extends State<ItemFormView> {
                           obscureText: false,
                         ),
                         SharedWidget.box(0, 10.h),
-                        ItemSharedWidget.textForm(
+                        SharedWidget.textForm(
                           controller: priceController,
                           labelText: 'Price',
                           validator: (val) {
@@ -110,7 +110,7 @@ class _ItemFormState extends State<ItemFormView> {
                           obscureText: false,
                         ),
                         SharedWidget.box(0, 10.h),
-                        ItemSharedWidget.textForm(
+                        SharedWidget.textForm(
                           controller: skuController,
                           labelText: 'SKU',
                           validator: (val) {
@@ -126,7 +126,7 @@ class _ItemFormState extends State<ItemFormView> {
                           obscureText: false,
                         ),
                         SharedWidget.box(0, 10.h),
-                        ItemSharedWidget.textForm(
+                        SharedWidget.textForm(
                           controller: descriptionController,
                           labelText: 'Description',
                           validator: (val) {
@@ -142,7 +142,7 @@ class _ItemFormState extends State<ItemFormView> {
                           obscureText: false,
                         ),
                         SharedWidget.box(0, 30.h),
-                        ItemSharedWidget.button(
+                        SharedWidget.button(
                             buttonLabel:
                                 widget.isUpdate ? 'Update Item' : 'Add Item',
                             onPressed: () {

@@ -6,19 +6,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sary/app/modules/item/controller/item_controller.dart';
 import 'package:sary/app/modules/item/model/item_model.dart';
 import 'package:sary/app/modules/item/view/item_view.dart';
+import 'package:sary/app/modules/transaction/controller/transaction_controller.dart';
+import 'package:sary/app/modules/transaction/model/transaction_model.dart';
 import 'package:sary/app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialises Hive
   await Hive.initFlutter();
   Hive.registerAdapter(ItemModelAdapter());
+  Hive.registerAdapter(TransactionModelAdapter());
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<ItemController>(create: (_) => ItemController()),
-        // ChangeNotifierProvider<ItemController>(create: (_) => ItemController()),
+        ChangeNotifierProvider<TransactionController>(
+            create: (_) => TransactionController()),
       ],
       child: const MyApp(),
     ),

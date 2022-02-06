@@ -57,6 +57,7 @@ var cardPriceTextStyle = TextStyle(
   color: const Color(0xff404040),
 );
 
+
 var cardStatusTextStyle = TextStyle(
   fontFamily: 'futura',
   fontWeight: FontWeight.w700,
@@ -65,6 +66,14 @@ var cardStatusTextStyle = TextStyle(
   color: const Color(0xff404040),
 );
 
+
+var transactionSearchTextStyle = TextStyle(
+  fontFamily: 'futura',
+  fontWeight: FontWeight.w400,
+  fontSize: 14.sp,
+  fontStyle: FontStyle.normal,
+  color: const Color(0xff5f5f5f),
+);
 // transaction details screen
 var transactionDetailTitleTextStyle = TextStyle(
   fontFamily: 'futura',

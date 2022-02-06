@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sary/app/modules/item/view/item_form.dart';
 import 'package:sary/app/modules/item/view/item_view.dart';
+import 'package:sary/app/modules/transaction/view/transaction_form.dart';
 import 'package:sary/app/modules/transaction/view/transaction_view.dart';
 import 'package:sary/app/routes/app_routes.dart';
 
@@ -22,9 +23,23 @@ class RouteGenerator {
           builder: (_) => const TransactionDetailView(),
         );
       case Routes.ITEM_FORM:
-        if (arguments is Map<String,dynamic>) {
+        if (arguments is Map<String, dynamic>) {
           return MaterialPageRoute(
-            builder: (_) => ItemFormView(isUpdate: arguments['isUpdate'],itemId: arguments['itemId'],),
+            builder: (_) => ItemFormView(
+              isUpdate: arguments['isUpdate'],
+              itemId: arguments['itemId'],
+            ),
+          );
+        } else {
+          return _404Route();
+        }
+      case Routes.TRANSACTION_FORM:
+        if (arguments is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (_) => TransactionFormView(
+              isUpdate: arguments['isUpdate'],
+              transId: arguments['transId'],
+            ),
           );
         } else {
           return _404Route();
