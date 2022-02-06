@@ -8,6 +8,7 @@ import 'package:sary/app/routes/app_routes.dart';
 import '../modules/transaction_detail/view/transaction_detail_view.dart';
 
 class RouteGenerator {
+  // ignore: constant_identifier_names
   static const INITIAL = Routes.ITEM;
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -15,9 +16,16 @@ class RouteGenerator {
       case INITIAL:
         return MaterialPageRoute(builder: (_) => const ItemView());
       case Routes.TRANSACTION:
-        return MaterialPageRoute(
-          builder: (_) => const TransactionView(),
-        );
+        if (arguments is Map<String,dynamic>) {
+          return MaterialPageRoute(
+            builder: (_) => TransactionView(
+              item: arguments,
+            ),
+          );
+        } else {
+          return _404Route();
+        }
+
       case Routes.TRANSACTION_DETAIL:
         return MaterialPageRoute(
           builder: (_) => const TransactionDetailView(),
@@ -39,6 +47,7 @@ class RouteGenerator {
             builder: (_) => TransactionFormView(
               isUpdate: arguments['isUpdate'],
               transId: arguments['transId'],
+              itemId: arguments['itemId'] ,
             ),
           );
         } else {
@@ -51,6 +60,7 @@ class RouteGenerator {
     }
   }
 
+  // ignore: non_constant_identifier_names
   static Route<dynamic> _404Route() {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(

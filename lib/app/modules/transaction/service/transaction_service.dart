@@ -66,18 +66,20 @@ class TransactionService {
       Box<TransactionModel> trans = await openBox();
       TransactionModel getTrans =
           trans.values.firstWhere((trans) => trans.id == transId);
-      // log('service = ' + getItem.name);
+      log('service = ' + getTrans.id.toString());
       return Left(getTrans);
     } catch (e) {
       return Right(CacheFailure(message: 'Error'));
     }
   }
 
-  static Future<Either<List<TransactionModel>, CacheFailure>>
-      getTransactions() async {
+  static Future<Either<List<TransactionModel>, CacheFailure>> getTransactions(
+      {required String itemId}) async {
     try {
       Box<TransactionModel> trans = await openBox();
-      return Left(trans.values.toList());
+      List<TransactionModel> getTrans =
+          trans.values.where((trans) => trans.itemId == itemId).toList();
+      return Left(getTrans);
     } catch (e) {
       return Right(CacheFailure(message: 'Error'));
     }

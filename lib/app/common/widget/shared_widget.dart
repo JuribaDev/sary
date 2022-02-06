@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'dart:io' show Platform;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -190,15 +191,17 @@ class SharedWidget {
   //shared loading indicator
   static Widget loadingInicator() {
     return Platform.isIOS
-        ? const CupertinoActivityIndicator()
-        : const CircularProgressIndicator();
+        ? const Center(child: CupertinoActivityIndicator())
+        : const Center(child: CircularProgressIndicator());
   }
 
 //shared textform
   static Widget textForm(
       {required String labelText,
+      VoidCallback? onTap,
       String? initialValue,
-      bool? readOnly,
+      TextInputFormatter? textInputFormatter,
+      bool? readOnly = false,
       bool? autofocus,
       TextStyle? textStyle,
       TextAlign? textAlign,
@@ -213,6 +216,8 @@ class SharedWidget {
       int? maxLength}) {
     return TextFormField(
       controller: controller,
+      onTap: onTap,
+      inputFormatters: textInputFormatter != null ? [textInputFormatter] : [],
       onChanged: onChanged,
       validator: validator,
       obscureText: obscureText ?? false,
@@ -244,6 +249,7 @@ class SharedWidget {
             Radius.circular(8.r),
           ),
         ),
+        floatingLabelBehavior: readOnly! ? FloatingLabelBehavior.never : null,
         border: OutlineInputBorder(
           borderSide: BorderSide(width: 0.8.w, color: const Color(0xffe7e7e7)),
           borderRadius: BorderRadius.all(

@@ -8,6 +8,7 @@ import 'package:sary/app/modules/item/model/item_model.dart';
 import 'package:sary/app/modules/item/view/item_view.dart';
 import 'package:sary/app/modules/transaction/controller/transaction_controller.dart';
 import 'package:sary/app/modules/transaction/model/transaction_model.dart';
+import 'package:sary/app/modules/transaction/view/transaction_view.dart';
 import 'package:sary/app/routes/app_pages.dart';
 
 void main() async {
@@ -57,6 +58,7 @@ class App extends StatelessWidget {
         context: context,
         minTextAdapt: true,
         orientation: Orientation.portrait);
-    return const ItemView();
+    return ItemView();
   }
 }
+// TransactionView

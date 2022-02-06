@@ -25,6 +25,14 @@ class ItemModel extends HiveObject {
       required this.price,
       required this.sku,
       required this.description});
+
+        Map<String, dynamic> toMap() => {
+        "id": id,
+        "name": name,
+        "price": price,
+        "sku": sku,
+        "description": description,
+      };
 }
 /*
  {

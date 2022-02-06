@@ -68,4 +68,36 @@ class TransactionSharedWidget {
           ),
         ));
   }
+
+
+      static Future<DateTime?> pickDate(
+      BuildContext context, DateTime? dateTime) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      
+      initialDate: dateTime ?? initialDate,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 5),
+    );
+
+    if (newDate == null) return null;
+
+    return newDate;
+  }
+
+  static Future<TimeOfDay?> pickTime(
+      BuildContext context, DateTime? dateTime) async {
+    final initialTime = TimeOfDay.now();
+    final newTime = await showTimePicker(
+      context: context,
+      initialTime: dateTime != null
+          ? TimeOfDay(hour: dateTime.hour, minute: dateTime.minute)
+          : initialTime,
+    );
+
+    if (newTime == null) return null;
+
+    return newTime;
+  }
 }

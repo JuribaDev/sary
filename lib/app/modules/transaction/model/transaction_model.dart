@@ -29,6 +29,16 @@ class TransactionModel extends HiveObject {
       required this.quantity,
       required this.inboundAt,
       required this.outboundAt});
+
+
+    Map<String, dynamic> toMap() => {
+        "id": id,
+        "type": type,
+        "itemId": itemId,
+        "quantity": quantity,
+        "inbound_at": inboundAt,
+        "outbound_at": outboundAt,
+      };
 }
 /*
  "id": 1,

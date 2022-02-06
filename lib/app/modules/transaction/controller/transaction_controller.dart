@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:sary/app/common/native_plugn/custom_toast_message.dart';
@@ -9,72 +8,95 @@ import 'package:sary/app/modules/transaction/service/transaction_service.dart';
 class TransactionController with ChangeNotifier {
   List<TransactionModel> transactions = [];
   late TransactionModel transactionModel;
-
-  //close trans box
-  static closeTransactionBox() {
-    Hive.box('transactions').close();
-  }
+  bool isLoading = false;
 
   //get trans
-  getTransactions() async {
+  getTransactions({required String itemId}) async {
+    isLoading = true;
     transactions.clear();
-    var res = await TransactionService.getTransactions();
+    var res = await TransactionService.getTransactions(itemId: itemId);
     res.fold((transactions) {
       this.transactions = transactions;
+      isLoading = false;
     }, (error) {
       SaryToastMessage.showToast(message: error.message);
+      isLoading = false;
     });
+    isLoading = false;
     notifyListeners();
   }
 
   //add trans
-  addTransaction({required TransactionModel trans}) async {
+  addTransaction(
+      {required TransactionModel trans, required String itemId}) async {
+    isLoading = true;
+
     var res = await TransactionService.addTransaction(transactionModel: trans);
     res.fold((succes) {
       SaryToastMessage.showToast(message: succes);
-      getTransactions();
+      getTransactions(itemId: itemId);
+      isLoading = false;
     }, (error) {
       SaryToastMessage.showToast(message: error.message);
+      isLoading = false;
     });
+    isLoading = false;
+
     notifyListeners();
   }
 
   //delete trans
-  Future<bool?> deleteTransaction({required String transId}) async {
+  Future<bool?> deleteTransaction(
+      {required String transId, required String itemId}) async {
     var res = await TransactionService.deleteTransaction(transId: transId);
     res.fold((succes) {
+      isLoading = true;
       SaryToastMessage.showToast(message: succes);
-      getTransactions();
+      getTransactions(itemId: itemId);
+      isLoading = false;
       return true;
     }, (error) {
       SaryToastMessage.showToast(message: error.message);
+      isLoading = false;
       return false;
     });
+    isLoading = false;
     notifyListeners();
     return null;
   }
 
   //update trans
-  updateTransaction({required String transId, required TransactionModel trans}) async {
-    var res =
-        await TransactionService.updateTransaction(transId: transId, transactionModel: trans);
+  updateTransaction(
+      {required String transId,
+      required TransactionModel trans,
+      required String itemId}) async {
+    isLoading = true;
+    var res = await TransactionService.updateTransaction(
+        transId: transId, transactionModel: trans);
     res.fold((succes) {
       SaryToastMessage.showToast(message: succes);
-      getTransactions();
+      getTransactions(itemId: itemId);
+      isLoading = false;
     }, (error) {
       SaryToastMessage.showToast(message: error.message);
+      isLoading = false;
     });
+    isLoading = false;
     notifyListeners();
   }
 
   //update trans
   getSingelTransaction({String? transId}) async {
+    isLoading = true;
     var res = await TransactionService.getSingelTransaction(transId: transId!);
     res.fold((trans) {
       transactionModel = trans;
+      isLoading = false;
     }, (error) {
       SaryToastMessage.showToast(message: error.message);
+      isLoading = false;
     });
+    isLoading = false;
     notifyListeners();
   }
 }

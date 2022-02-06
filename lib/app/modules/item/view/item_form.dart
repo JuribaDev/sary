@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -97,6 +98,8 @@ class _ItemFormState extends State<ItemFormView> {
                         SharedWidget.textForm(
                           controller: priceController,
                           labelText: 'Price',
+                          textInputFormatter:
+                              FilteringTextInputFormatter.digitsOnly,
                           validator: (val) {
                             if (val!.isEmpty) {
                               return "Enter the price";
@@ -161,6 +164,7 @@ class _ItemFormState extends State<ItemFormView> {
                                               sku: skuController.text,
                                               description:
                                                   descriptionController.text));
+                                  Navigator.pop(context);
                                 } else {
                                   Provider.of<ItemController>(context,
                                           listen: false)
@@ -172,6 +176,7 @@ class _ItemFormState extends State<ItemFormView> {
                                               sku: skuController.text,
                                               description:
                                                   descriptionController.text));
+                                  Navigator.pop(context);
                                 }
                               }
 
@@ -179,7 +184,6 @@ class _ItemFormState extends State<ItemFormView> {
                               priceController.clear();
                               skuController.clear();
                               descriptionController.clear();
-                              Navigator.pop(context);
                             }),
                       ],
                     ),

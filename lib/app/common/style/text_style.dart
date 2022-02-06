@@ -28,7 +28,7 @@ var hintTextStyle = TextStyle(
 var cardTitleTextStyle = TextStyle(
   fontFamily: 'futura',
   fontWeight: FontWeight.w400,
-  fontSize: 14.sp,
+  fontSize: 16.sp,
   fontStyle: FontStyle.normal,
   color: const Color(0xff404040),
 );
@@ -36,7 +36,7 @@ var cardTitleTextStyle = TextStyle(
 var cardSubtitleTextStyle = TextStyle(
   fontFamily: 'futura',
   fontWeight: FontWeight.w400,
-  fontSize: 12.sp,
+  fontSize: 14.sp,
   fontStyle: FontStyle.normal,
   color: const Color(0xff636363),
 );
@@ -44,7 +44,7 @@ var cardSubtitleTextStyle = TextStyle(
 var cardDateTextStyle = TextStyle(
   fontFamily: 'futura',
   fontWeight: FontWeight.w400,
-  fontSize: 12.sp,
+  fontSize: 14.sp,
   fontStyle: FontStyle.normal,
   color: const Color(0xff636363),
 );
@@ -52,20 +52,18 @@ var cardDateTextStyle = TextStyle(
 var cardPriceTextStyle = TextStyle(
   fontFamily: 'futura',
   fontWeight: FontWeight.w700,
-  fontSize: 12.sp,
+  fontSize: 14.sp,
   fontStyle: FontStyle.normal,
   color: const Color(0xff404040),
 );
-
 
 var cardStatusTextStyle = TextStyle(
   fontFamily: 'futura',
   fontWeight: FontWeight.w700,
-  fontSize: 12.sp,
+  fontSize: 14.sp,
   fontStyle: FontStyle.normal,
   color: const Color(0xff404040),
 );
-
 
 var transactionSearchTextStyle = TextStyle(
   fontFamily: 'futura',
