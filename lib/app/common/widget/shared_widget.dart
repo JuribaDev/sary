@@ -74,7 +74,6 @@ class SharedWidget {
   }
 
   //shared floating buttons
-
   static Widget floatingButton(
       {required Widget child,
       required bool isOneButton,

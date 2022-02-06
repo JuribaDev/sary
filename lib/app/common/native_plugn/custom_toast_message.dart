@@ -9,7 +9,7 @@ class SaryToastMessage {
     final Map<String, dynamic> arg = <String, dynamic>{
       'message': message,
     };
-    var res = await channel.invokeMethod('saryToast', arg);
-    print(res.toString());
+     await channel.invokeMethod('saryToast', arg);
+    
   }
 }

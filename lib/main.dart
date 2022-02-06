@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:sary/app/common/colors/light_theme_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sary/app/modules/item/controller/item_controller.dart';
+import 'package:sary/app/modules/item/model/item_model.dart';
 import 'package:sary/app/modules/item/view/item_view.dart';
 import 'package:sary/app/routes/app_pages.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialises Hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(ItemModelAdapter());
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ItemController>(create: (_) => ItemController()),
+        // ChangeNotifierProvider<ItemController>(create: (_) => ItemController()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
