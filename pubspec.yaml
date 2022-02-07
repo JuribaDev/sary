@@ -34,17 +34,26 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   hive: ^2.0.5
+  hive_flutter: ^1.1.0
+
+  #to make pixel perfect
   flutter_screenutil: ^5.1.1
+  #icon
   flutter_svg: ^1.0.3
   provider: ^6.0.2
+  # to forma the date
   intl: ^0.17.0
-  hive_flutter: ^1.1.0
+
+  #to generate random
   uuid: ^3.0.5
+  # to add some funcins to dart like ether
   dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  #to generat model adaper
   build_runner: ^2.1.7
   hive_generator: ^1.1.2
   # The "flutter_lints" package below contains a set of recommended lints to

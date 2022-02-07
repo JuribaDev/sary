@@ -123,7 +123,7 @@ class _ItemFormState extends State<TransactionFormView> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        i == 1 ? 'Inbouind' : 'Outbound',
+                                        i == 1 ? 'Inbound' : 'Outbound',
                                         style: transactionDetailTitleTextStyle,
                                       ),
                                       Radio(
@@ -263,11 +263,7 @@ class _ItemFormState extends State<TransactionFormView> {
                                                   createdAT: DateTime.now(),),);
                                 }
                                 Navigator.pop(context);
-                                typeController.clear();
-                                quantityController.clear();
-                                inboundAtController.clear();
-                                outboundAtController.clear();
-                                tranNameController.clear();
+                           
                               }
                             }),
                       ],

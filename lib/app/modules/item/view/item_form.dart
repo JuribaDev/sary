@@ -179,11 +179,6 @@ class _ItemFormState extends State<ItemFormView> {
                                   Navigator.pop(context);
                                 }
                               }
-
-                              nameController.clear();
-                              priceController.clear();
-                              skuController.clear();
-                              descriptionController.clear();
                             }),
                       ],
                     ),
