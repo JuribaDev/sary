@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:hive/hive.dart';
 import 'package:sary/app/common/exception/failure.dart';
+import 'package:sary/app/common/util/date_time_format.dart';
 import 'package:sary/app/modules/transaction/model/transaction_model.dart';
 
 class TransactionService {
@@ -18,6 +19,7 @@ class TransactionService {
         inboundAt: transactionModel.inboundAt,
         outboundAt: transactionModel.outboundAt,
         transName: transactionModel.transName,
+        createdAT: transactionModel.createdAT,
       ));
       return const Left('Transaction added successfully');
     } catch (e) {
@@ -56,6 +58,7 @@ class TransactionService {
           inboundAt: transactionModel.inboundAt,
           outboundAt: transactionModel.outboundAt,
           transName: transactionModel.transName,
+          createdAT: transactionModel.createdAT,
         ),
       );
       return const Left('Transaction updated successfully');
@@ -104,9 +107,64 @@ class TransactionService {
     }
   }
 
+  static Future<Either<List<TransactionModel>, CacheFailure>>
+      filterByTansactionQuantity(
+          {required String itemId,
+          required String from,
+          required String to}) async {
+    try {
+      Box<TransactionModel> trans = await openBox();
+      List<TransactionModel> getTrans =
+          trans.values.where((trans) => trans.itemId == itemId).toList();
+      List<TransactionModel> filteredTrans = [];
 
-  static Future<Either<List<TransactionModel>, CacheFailure>> filterByTransactionType(
-      {required String itemId, required String transType}) async {
+      for (var trans in getTrans) {
+        double quantity = double.parse(trans.quantity.toString());
+        double quantityFrom = double.parse(from);
+        double quantityTo = double.parse(to);
+        if (quantity >= quantityFrom && quantity <= quantityTo) {
+          filteredTrans.add(trans);
+        }
+      }
+
+      return Left(filteredTrans);
+    } catch (e) {
+      return Right(CacheFailure(message: 'Error'));
+    }
+  }
+
+  static Future<Either<List<TransactionModel>, CacheFailure>>
+      filterByTansactionCreatedAt(
+          {required String itemId,
+          required String from,
+          required String to}) async {
+    try {
+      Box<TransactionModel> trans = await openBox();
+      List<TransactionModel> getTrans =
+          trans.values.where((trans) => trans.itemId == itemId).toList();
+      List<TransactionModel> filteredTrans = [];
+
+      for (var trans in getTrans) {
+        DateTime createdAt =
+            DateTimeFormat.convertStringToDateTime(trans.inboundAt);
+        DateTime createdFrom = DateTimeFormat.convertStringToDateTime(from);
+        
+        DateTime createdTo = DateTimeFormat.convertStringToDateTime(to);
+        
+        if (createdAt.isAfter(createdFrom) && createdAt.isBefore(createdTo)) {
+          filteredTrans.add(trans);
+        }
+      }
+
+      return Left(filteredTrans);
+    } catch (e) {
+      return Right(CacheFailure(message: 'Error'));
+    }
+  }
+
+  static Future<Either<List<TransactionModel>, CacheFailure>>
+      filterByTransactionType(
+          {required String itemId, required String transType}) async {
     try {
       Box<TransactionModel> trans = await openBox();
       List<TransactionModel> getTrans = trans.values

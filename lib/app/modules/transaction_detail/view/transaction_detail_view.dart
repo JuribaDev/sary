@@ -141,7 +141,9 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        transactionDetailView['trans']['inbound_at'].toString().substring(0,10),
+                        transactionDetailView['trans']['inbound_at']
+                            .toString()
+                            .substring(0, 8),
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -155,9 +157,9 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                       transactionDetailView['trans']['inbound_at']
+                        transactionDetailView['trans']['inbound_at']
                             .toString()
-                            .substring(11, 17),
+                            .substring(9),
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -179,8 +181,10 @@ class TransactionDetailView extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(transactionDetailView['trans']['inbound_at'].toString().substring(0,10)
-                       ,
+                      Text(
+                        transactionDetailView['trans']['inbound_at']
+                            .toString()
+                            .substring(0, 8),
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -194,9 +198,9 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                         transactionDetailView['trans']['outbound_at']
+                        transactionDetailView['trans']['outbound_at']
                             .toString()
-                            .substring(11, 17),
+                            .substring(9),
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(

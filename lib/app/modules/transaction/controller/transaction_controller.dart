@@ -140,21 +140,67 @@ class TransactionController with ChangeNotifier {
     notifyListeners();
   }
 
+  //filter by Quantity
+  filterByTansactionQuantity(
+      {required String itemId,
+      required String from,
+      required String to}) async {
+    isLoading = true;
+    transactions.clear();
+    var res = await TransactionService.filterByTansactionQuantity(
+        itemId: itemId, from: from, to: to);
+    res.fold((transactions) {
+      this.transactions = transactions;
+      isLoading = false;
+    }, (error) {
+      SaryToastMessage.showToast(message: error.message);
+      isLoading = false;
+    });
+    isLoading = false;
+    notifyListeners();
+  }
+
+  //filter by Quantity
+  filterByTansactionCreatedAt(
+      {required String itemId,
+      required String from,
+      required String to}) async {
+    isLoading = true;
+    transactions.clear();
+    var res = await TransactionService.filterByTansactionCreatedAt(
+        itemId: itemId, from: from, to: to);
+    res.fold((transactions) {
+      this.transactions = transactions;
+      isLoading = false;
+    }, (error) {
+      SaryToastMessage.showToast(message: error.message);
+      isLoading = false;
+    });
+    isLoading = false;
+    notifyListeners();
+  }
+
   searchOrFilter(
-      {required OperationType operationType, String? query, String? itemId}) {
+      {required OperationType operationType,
+      String? query,
+      String? itemId,
+      String? from,
+      String? to}) {
     switch (operationType) {
       case OperationType.search:
         searchByname(itemId: itemId!, query: query!);
         break;
       case OperationType.filterByQuantity:
+        filterByTansactionQuantity(itemId: itemId!, from: from!, to: to!);
         break;
       case OperationType.filterByCreatedAt:
+        filterByTansactionCreatedAt(itemId: itemId!, from: from!, to: to!);
         break;
       case OperationType.filterByInbound:
         filterByTansactionType(itemId: itemId!, transType: query!);
         break;
       case OperationType.filterByOutbound:
-      filterByTansactionType(itemId: itemId!, transType: query!);
+        filterByTansactionType(itemId: itemId!, transType: query!);
         break;
       default:
     }

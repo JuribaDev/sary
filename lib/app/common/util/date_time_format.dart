@@ -17,9 +17,13 @@ class DateTimeFormat {
   }
 
   static String getFullDateTime(DateTime dateTime) {
-    var formatter = DateFormat('yyyy-MM-dd');
-    String time = getTime(dateTime);
-    return formatter.format(dateTime) + ' ' + time;
+    var formatter = DateFormat.yMd().add_jm();
+    return formatter.format(dateTime);
+  }
+  static DateTime convertStringToDateTime(String dateTime) {
+    var formatter =  DateFormat.yMd().add_jm().parse(dateTime);
+   
+    return formatter;
   }
 
   static String getDayOfWeek(DateTime dateTime) {

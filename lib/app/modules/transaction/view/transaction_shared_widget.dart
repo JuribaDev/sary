@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sary/app/common/colors/light_theme_color.dart';
 import 'package:sary/app/common/style/text_style.dart';
+import 'package:sary/app/common/util/date_time_format.dart';
 import 'package:sary/app/common/widget/shared_widget.dart';
+import 'package:sary/app/modules/transaction/controller/transaction_controller.dart';
 
 class TransactionSharedWidget {
   static Widget customTextForm(
@@ -111,125 +114,165 @@ class FilterWidget extends StatefulWidget {
   FilterWidget({
     Key? key,
     required this.context,
+    required this.item,
   }) : super(key: key);
   BuildContext context;
+  Map<String, dynamic> item;
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var startDateController;
+  late DateTime start;
+  late DateTime end;
   var endDateController;
   RangeValues _rangeSliderDiscreteValues = const RangeValues(1, 1000);
   @override
   void initState() {
+    start = DateTime.now();
+    end = DateTime(DateTime.now().month - 1);
     startDateController = TextEditingController();
+
     endDateController = TextEditingController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 600.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.r),
-          topRight: Radius.circular(20.r),
+    var controller = Provider.of<TransactionController>(context, listen: false);
+    return Form(
+      key: formKey,
+      child: Container(
+        height: 700.h,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
+          border: Border.all(color: lightColorScheme.primary, width: 0.3.w),
         ),
-        border: Border.all(color: lightColorScheme.primary, width: 0.3.w),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 14.w),
-        child: Column(
-          children: [
-            Icon(
-              Icons.keyboard_arrow_down_rounded,
-              size: 35.sp,
-              color: lightColorScheme.primary,
-            ),
-            SharedWidget.box(0, 20.h),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Filter By Quantity',
-                style: transactionDetailDatetimeTextStyle,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          child: Column(
+            children: [
+              Icon(
+                Icons.keyboard_arrow_down_rounded,
+                size: 35.sp,
+                color: lightColorScheme.primary,
               ),
-            ),
-            SharedWidget.box(0, 10.h),
-            RangeSlider(
-              values: _rangeSliderDiscreteValues,
-              min: 0,
-              max: 1000,
-              divisions: 1000,
-              labels: RangeLabels(
-                _rangeSliderDiscreteValues.start.round().toString(),
-                _rangeSliderDiscreteValues.end.round().toString(),
+              SharedWidget.box(0, 10.h),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Filter By Quantity',
+                  style: transactionDetailDatetimeTextStyle,
+                ),
               ),
-              onChanged: (values) {
-                setState(() {
-                  _rangeSliderDiscreteValues = values;
-                });
-                log(_rangeSliderDiscreteValues.start.toString());
-              },
-            ),
-            SharedWidget.box(0, 20.h),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Filter By Date created',
-                style: transactionDetailDatetimeTextStyle,
+              SharedWidget.box(0, 10.h),
+              RangeSlider(
+                values: _rangeSliderDiscreteValues,
+                min: 0,
+                max: 1000,
+                divisions: 1000,
+                labels: RangeLabels(
+                  _rangeSliderDiscreteValues.start.round().toString(),
+                  _rangeSliderDiscreteValues.end.round().toString(),
+                ),
+                onChanged: (values) {
+                  setState(() {
+                    _rangeSliderDiscreteValues = values;
+                  });
+                },
               ),
-            ),
-            SharedWidget.box(0, 10.h),
-            Container(
-              child: SharedWidget.textForm(
-                onTap: () async {
-                  // .start.toString().substring(0, 10)
-                  var val = await pickDateRange(context);
+              SharedWidget.box(0, 10.h),
+              SharedWidget.buttonWithOutIcon(
+                  onPressed: () {
+                    controller.searchOrFilter(
+                        operationType: OperationType.filterByQuantity,
+                        itemId: widget.item['id'],
+                        from: _rangeSliderDiscreteValues.start.toString(),
+                        to: _rangeSliderDiscreteValues.end.toString());
 
-                  startDateController.text =
-                      val.start.toString().substring(0, 10);
-                  endDateController.text = val.end.toString().substring(0, 10);
-                },
-                readOnly: true,
-                controller: startDateController,
-                labelText: 'Satart Date At',
-                validator: (val) {
-                  if (val!.isEmpty) {}
-                },
-                textInputAction: TextInputAction.next,
-                obscureText: false,
+                    Navigator.pop(context);
+                  },
+                  buttonLabel: 'Quantity Filter'),
+              SharedWidget.box(0, 10.h),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Filter By Date created',
+                  style: transactionDetailDatetimeTextStyle,
+                ),
               ),
-            ),
-            SharedWidget.box(0, 10.h),
-            Container(
-              child: SharedWidget.textForm(
-                onTap: () async {
-                  var val = await pickDateRange(context);
-                  startDateController.text =
-                      val.start.toString().substring(0, 10);
-                  endDateController.text = val.end.toString().substring(0, 10);
-                },
-                readOnly: true,
-                controller: endDateController,
-                labelText: 'End Date At',
-                validator: (val) {
-                  if (val!.isEmpty) {}
-                },
-                textInputAction: TextInputAction.next,
-                obscureText: false,
+              SharedWidget.box(0, 10.h),
+              Container(
+                child: SharedWidget.textForm(
+                  onTap: () async {
+                    var val = await pickDateRange(context);
+                    start = val.start;
+                    end = val.end;
+                    startDateController.text =
+                        DateTimeFormat.getFullDateTime(val.start)
+                            .substring(0, 8);
+                    endDateController.text =
+                        DateTimeFormat.getFullDateTime(val.end).substring(0, 8);
+                  },
+                  readOnly: true,
+                  controller: startDateController,
+                  labelText: 'Satart Date At',
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return "Enter The Start Date";
+                    }
+                  },
+                  textInputAction: TextInputAction.next,
+                  obscureText: false,
+                ),
               ),
-            ),
-            SharedWidget.box(0, 10.h),
-            SharedWidget.buttonWithOutIcon(
-                onPressed: () {}, buttonLabel: 'Filter'),
-            Expanded(child: SharedWidget.box(0, 30.h)),
-            SharedWidget.buttonWithOutIcon(
-                onPressed: () {}, buttonLabel: 'Clean Filters'),
-            SharedWidget.box(0, 10.h)
-          ],
+              SharedWidget.box(0, 10.h),
+              Container(
+                child: SharedWidget.textForm(
+                  onTap: () async {
+                    var val = await pickDateRange(context);
+                    start = val.start;
+                    end = val.end;
+                    startDateController.text =
+                        DateTimeFormat.getFullDateTime(val.start)
+                            .substring(0, 8);
+                    endDateController.text =
+                        DateTimeFormat.getFullDateTime(val.end).substring(0, 8);
+                  },
+                  readOnly: true,
+                  controller: endDateController,
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return "Enter The End Date";
+                    }
+                  },
+                  labelText: 'End Date At',
+                  textInputAction: TextInputAction.next,
+                  obscureText: false,
+                ),
+              ),
+              SharedWidget.box(0, 10.h),
+              SharedWidget.buttonWithOutIcon(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      controller.searchOrFilter(
+                          operationType: OperationType.filterByCreatedAt,
+                          itemId: widget.item['id'],
+                          from: start.toString(),
+                          to: end.toString());
+
+                      Navigator.pop(context);
+                    }
+                  },
+                  buttonLabel: 'Date Filter'),
+            ],
+          ),
         ),
       ),
     );

@@ -94,7 +94,7 @@ class _TransactionViewState extends State<TransactionView> {
                       onPressed: () => SharedWidget.bottomSheet(
                           context: context,
                           child: FilterWidget(
-                          
+                          item: widget.item,
                             context: context,
                           )))
                 ]),

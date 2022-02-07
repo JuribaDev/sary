@@ -25,6 +25,9 @@ class TransactionModel extends HiveObject {
   @HiveField(6)
   final String transName;
 
+  @HiveField(6)
+  final DateTime createdAT;
+
   TransactionModel(
       {required this.id,
       required this.type,
@@ -33,6 +36,7 @@ class TransactionModel extends HiveObject {
       required this.inboundAt,
       required this.outboundAt,
       required this.transName,
+      required this.createdAT,
       });
 
 
@@ -44,6 +48,7 @@ class TransactionModel extends HiveObject {
         "inbound_at": inboundAt,
         "outbound_at": outboundAt,
         "trans_name": transName,
+        "created_at": transName,
       };
 }
 /*

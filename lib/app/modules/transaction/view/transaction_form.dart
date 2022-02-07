@@ -242,6 +242,7 @@ class _ItemFormState extends State<TransactionFormView> {
                                             outboundAt:
                                                 outboundAtController.text,
                                             transName: tranNameController.text,
+                                            createdAT: DateTime.now()
                                           ));
                                 } else {
                                   Provider.of<TransactionController>(context,
@@ -258,7 +259,8 @@ class _ItemFormState extends State<TransactionFormView> {
                                               outboundAt:
                                                   outboundAtController.text,
                                               transName:
-                                                  tranNameController.text));
+                                                  tranNameController.text,
+                                                  createdAT: DateTime.now(),),);
                                 }
                                 Navigator.pop(context);
                                 typeController.clear();
