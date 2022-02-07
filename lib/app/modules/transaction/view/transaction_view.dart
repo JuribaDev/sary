@@ -94,7 +94,7 @@ class _TransactionViewState extends State<TransactionView> {
                       onPressed: () => SharedWidget.bottomSheet(
                           context: context,
                           child: FilterWidget(
-                          item: widget.item,
+                            item: widget.item,
                             context: context,
                           )))
                 ]),
@@ -114,9 +114,17 @@ class _TransactionViewState extends State<TransactionView> {
                                 .transactions
                                 .isEmpty
                             ? Center(
-                                child: Text(
-                                  'There are no Transactions -_- ',
-                                  style: transactionDetailDatetimeTextStyle,
+                                child: OutlinedButton(
+                                  onPressed: () =>
+                                      Provider.of<TransactionController>(
+                                              context,
+                                              listen: false)
+                                          .getTransactions(
+                                              itemId: widget.item['id']),
+                                  child: Text(
+                                    'There are no Transactions -_- ',
+                                    style: transactionDetailDatetimeTextStyle,
+                                  ),
                                 ),
                               )
                             : ListView.builder(

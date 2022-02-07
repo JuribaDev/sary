@@ -128,7 +128,7 @@ class _FilterWidgetState extends State<FilterWidget> {
   late DateTime start;
   late DateTime end;
   var endDateController;
-  RangeValues _rangeSliderDiscreteValues = const RangeValues(1, 1000);
+  RangeValues _rangeSliderDiscreteValues = const RangeValues(1, 10000);
   @override
   void initState() {
     start = DateTime.now();
@@ -175,8 +175,8 @@ class _FilterWidgetState extends State<FilterWidget> {
               RangeSlider(
                 values: _rangeSliderDiscreteValues,
                 min: 0,
-                max: 1000,
-                divisions: 1000,
+                max: 10000,
+                divisions: 5000,
                 labels: RangeLabels(
                   _rangeSliderDiscreteValues.start.round().toString(),
                   _rangeSliderDiscreteValues.end.round().toString(),
@@ -264,8 +264,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                       controller.searchOrFilter(
                           operationType: OperationType.filterByCreatedAt,
                           itemId: widget.item['id'],
-                          from: start.toString(),
-                          to: end.toString());
+                          fromDate: start,
+                          toDate: end);
 
                       Navigator.pop(context);
                     }
@@ -282,7 +282,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     DateTimeRange? newDateRange = await showDateRangePicker(
         context: context,
         firstDate: DateTime(DateTime.now().year - 10),
-        lastDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().year + 1),
         initialDateRange: DateTimeRange(
           start: DateTime.now(),
           end: DateTime.now(),

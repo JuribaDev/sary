@@ -136,22 +136,21 @@ class TransactionService {
   static Future<Either<List<TransactionModel>, CacheFailure>>
       filterByTansactionCreatedAt(
           {required String itemId,
-          required String from,
-          required String to}) async {
+          required DateTime from,
+          required DateTime to}) async {
     try {
       Box<TransactionModel> trans = await openBox();
-      List<TransactionModel> getTrans =
-          trans.values.where((trans) => trans.itemId == itemId).toList();
+      List<TransactionModel> getTrans = trans.values
+          .where(
+            (trans) =>
+                trans.itemId == itemId 
+          )
+          .toList();
       List<TransactionModel> filteredTrans = [];
 
       for (var trans in getTrans) {
-        DateTime createdAt =
-            DateTimeFormat.convertStringToDateTime(trans.inboundAt);
-        DateTime createdFrom = DateTimeFormat.convertStringToDateTime(from);
-        
-        DateTime createdTo = DateTimeFormat.convertStringToDateTime(to);
-        
-        if (createdAt.isAfter(createdFrom) && createdAt.isBefore(createdTo)) {
+        if (trans.createdAT.isAfter(from) &&
+            trans.createdAT.isBefore(to)) {
           filteredTrans.add(trans);
         }
       }

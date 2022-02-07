@@ -25,7 +25,7 @@ class TransactionModel extends HiveObject {
   @HiveField(6)
   final String transName;
 
-  @HiveField(6)
+  @HiveField(7)
   final DateTime createdAT;
 
   TransactionModel(
@@ -48,7 +48,7 @@ class TransactionModel extends HiveObject {
         "inbound_at": inboundAt,
         "outbound_at": outboundAt,
         "trans_name": transName,
-        "created_at": transName,
+        "created_at": createdAT.toIso8601String(),
       };
 }
 /*

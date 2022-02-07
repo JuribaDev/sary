@@ -1,16 +1,12 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:sary/app/common/colors/light_theme_color.dart';
-import 'package:sary/app/common/native_plugn/custom_toast_message.dart';
 import 'package:sary/app/common/style/text_style.dart';
 import 'package:sary/app/common/widget/shared_widget.dart';
 import 'package:sary/app/modules/item/controller/item_controller.dart';
-import 'package:sary/app/modules/item/view/item_form.dart';
-import 'package:sary/app/modules/transaction/controller/transaction_controller.dart';
 import 'package:sary/app/routes/app_routes.dart';
 
 class ItemView extends StatefulWidget {
@@ -55,9 +51,13 @@ class _ItemViewState extends State<ItemView> {
               ? SharedWidget.loadingInicator()
               : Provider.of<ItemController>(context).items.isEmpty
                   ? Center(
-                      child: Text(
-                        'There are no Items -_-',
-                        style: transactionDetailDatetimeTextStyle,
+                      child: OutlinedButton(
+                        onPressed: ()=> Provider.of<ItemController>(context, listen: false)
+                .getItems(),
+                        child: Text(
+                          'There are no Items -_-',
+                          style: transactionDetailDatetimeTextStyle,
+                        ),
                       ),
                     )
                   : ListView.builder(

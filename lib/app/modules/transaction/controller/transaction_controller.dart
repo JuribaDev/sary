@@ -160,11 +160,13 @@ class TransactionController with ChangeNotifier {
     notifyListeners();
   }
 
-  //filter by Quantity
+  //filter by CreatedAt
   filterByTansactionCreatedAt(
       {required String itemId,
-      required String from,
-      required String to}) async {
+      required DateTime from,
+      required DateTime to}) async {
+    // log(from);
+    // log(to);
     isLoading = true;
     transactions.clear();
     var res = await TransactionService.filterByTansactionCreatedAt(
@@ -180,12 +182,15 @@ class TransactionController with ChangeNotifier {
     notifyListeners();
   }
 
-  searchOrFilter(
-      {required OperationType operationType,
-      String? query,
-      String? itemId,
-      String? from,
-      String? to}) {
+  searchOrFilter({
+    required OperationType operationType,
+    String? query,
+    String? itemId,
+    String? from,
+    String? to,
+    DateTime? fromDate,
+    DateTime? toDate
+  }) {
     switch (operationType) {
       case OperationType.search:
         searchByname(itemId: itemId!, query: query!);
@@ -194,7 +199,7 @@ class TransactionController with ChangeNotifier {
         filterByTansactionQuantity(itemId: itemId!, from: from!, to: to!);
         break;
       case OperationType.filterByCreatedAt:
-        filterByTansactionCreatedAt(itemId: itemId!, from: from!, to: to!);
+        filterByTansactionCreatedAt(itemId: itemId!, from: fromDate!, to: toDate!);
         break;
       case OperationType.filterByInbound:
         filterByTansactionType(itemId: itemId!, transType: query!);
