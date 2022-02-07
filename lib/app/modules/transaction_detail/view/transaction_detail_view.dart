@@ -6,7 +6,9 @@ import 'package:sary/app/common/util/date_time_format.dart';
 import 'package:sary/app/common/widget/shared_widget.dart';
 
 class TransactionDetailView extends StatelessWidget {
-  const TransactionDetailView({Key? key}) : super(key: key);
+  Map<String, dynamic> transactionDetailView;
+  TransactionDetailView({Key? key, required this.transactionDetailView})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +57,16 @@ class TransactionDetailView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Barbican Beer Drink',
+                            transactionDetailView['item']['name'],
                             style: transactionDetailTitleTextStyle,
                           ),
                           SharedWidget.box(0, 10.h),
                           Text(
-                            'PRO-SA3',
+                            transactionDetailView['item']['sku'],
                             style: transactionDetailSubtitleTextStyle,
                           ),
                           Text(
-                            '320 × 6 ml',
+                            transactionDetailView['item']['description'],
                             style: transactionDetailSubtitleTextStyle,
                           ),
                         ],
@@ -81,7 +83,7 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '25',
+                        transactionDetailView['trans']['quantity'],
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -94,7 +96,7 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '12.13 SR',
+                        transactionDetailView['item']['price'],
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -106,15 +108,22 @@ class TransactionDetailView extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Stock In',
+                        transactionDetailView['trans']['type'] == 'Inbound'
+                            ? 'In Stock'
+                            : 'Out Stock',
                         style: transactionDetailStatusTextStyle,
                       ),
                       SharedWidget.box(12.w),
                       SvgPicture.asset(
-                        "assets/icons/next_down.svg",
+                        transactionDetailView['trans']['type'] == 'Inbound'
+                            ? "assets/icons/next_down.svg"
+                            : "assets/icons/next_up.svg",
                         width: 10.w,
                         height: 22.h,
-                        color: Colors.greenAccent,
+                        color:
+                            transactionDetailView['trans']['type'] == 'Inbound'
+                                ? Colors.greenAccent
+                                : Colors.red,
                       ),
                     ],
                   ),
@@ -132,7 +141,7 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        DateTime.now().toString().substring(0, 10),
+                        transactionDetailView['trans']['inbound_at'].toString().substring(0,10),
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -146,7 +155,9 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        DateTimeFormat.getTime(DateTime.now()),
+                       transactionDetailView['trans']['inbound_at']
+                            .toString()
+                            .substring(11, 17),
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -164,13 +175,12 @@ class TransactionDetailView extends StatelessWidget {
               ),
               SharedWidget.box(0, 15.h),
               Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        DateTime.now().toString().substring(0, 10),
+                      Text(transactionDetailView['trans']['inbound_at'].toString().substring(0,10)
+                       ,
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(
@@ -184,7 +194,9 @@ class TransactionDetailView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        DateTimeFormat.getTime(DateTime.now()),
+                         transactionDetailView['trans']['outbound_at']
+                            .toString()
+                            .substring(11, 17),
                         style: transactionDetailPriceAndQuantityTextStyle,
                       ),
                       Text(

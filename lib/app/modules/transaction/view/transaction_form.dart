@@ -40,7 +40,7 @@ class _ItemFormState extends State<TransactionFormView> {
 
   @override
   void initState() {
-    typeController = TextEditingController(text: "Inbound");
+    typeController = TextEditingController(text: 'Inbound');
     quantityController = TextEditingController();
     inboundAtController = TextEditingController();
     outboundAtController = TextEditingController();

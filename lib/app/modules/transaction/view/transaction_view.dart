@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sary/app/common/colors/light_theme_color.dart';
-import 'package:sary/app/common/native_plugn/custom_toast_message.dart';
 import 'package:sary/app/common/style/text_style.dart';
 import 'package:sary/app/common/widget/shared_widget.dart';
 import 'package:sary/app/modules/transaction/controller/transaction_controller.dart';
@@ -86,214 +85,241 @@ class _TransactionViewState extends State<TransactionView> {
                               listen: false)
                           .getTransactions(itemId: widget.item['id']);
                     },
-                    child:  Provider.of<TransactionController>(context).isLoading
+                    child: Provider.of<TransactionController>(context).isLoading
                         ? SharedWidget.loadingInicator()
-                        :  Provider.of<TransactionController>(context).transactions.isEmpty
-                        ? Center(
-                            child: Text(
-                              'There are no Transactions -_- ',
-                              style: transactionDetailDatetimeTextStyle,
-                            ),
-                          )
-                        : ListView.builder(
-                      itemCount: Provider.of<TransactionController>(context)
-                          .transactions
-                          .length,
-                      itemBuilder: (context, i) {
-                       
-
-                        return GestureDetector(
-                          onTap: () => Navigator.of(context)
-                              .pushNamed(Routes.TRANSACTION_DETAIL),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.w, vertical: 14.h),
-                            child: Dismissible(
-                              key: const ValueKey('dismiss'),
-                              confirmDismiss: (dis) async {
-                                if (DismissDirection.startToEnd == dis) {
-                                  SharedWidget.alertDialog(
-                                      context: context,
-                                      title: 'Delete Transaction',
-                                      onYesPressed: () async {
-                                        String transId =
-                                            Provider.of<TransactionController>(
+                        : Provider.of<TransactionController>(context)
+                                .transactions
+                                .isEmpty
+                            ? Center(
+                                child: Text(
+                                  'There are no Transactions -_- ',
+                                  style: transactionDetailDatetimeTextStyle,
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount:
+                                    Provider.of<TransactionController>(context)
+                                        .transactions
+                                        .length,
+                                itemBuilder: (context, i) {
+                                  return GestureDetector(
+                                    onTap: () => Navigator.pushNamed(
+                                        context, Routes.TRANSACTION_DETAIL,
+                                        arguments: {
+                                          "trans": Provider.of<
+                                                      TransactionController>(
+                                                  context,
+                                                  listen: false)
+                                              .transactions[i]
+                                              .toMap(),
+                                          "item": widget.item
+                                        }),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 20.w, vertical: 14.h),
+                                      child: Dismissible(
+                                        key: const ValueKey('dismiss'),
+                                        confirmDismiss: (dis) async {
+                                          if (DismissDirection.startToEnd ==
+                                              dis) {
+                                            SharedWidget.alertDialog(
+                                                context: context,
+                                                title: 'Delete Transaction',
+                                                onYesPressed: () async {
+                                                  String transId = Provider.of<
+                                                              TransactionController>(
+                                                          context,
+                                                          listen: false)
+                                                      .transactions[i]
+                                                      .id;
+                                                  await Provider.of<
+                                                              TransactionController>(
+                                                          context,
+                                                          listen: false)
+                                                      .deleteTransaction(
+                                                          itemId:
+                                                              widget.item['id'],
+                                                          transId: transId);
+                                                  Navigator.pop(context);
+                                                },
+                                                hasContent: true,
+                                                content:
+                                                    'Are sure to delete Transaction ID: ${Provider.of<TransactionController>(context, listen: false).transactions[i].id}');
+                                          } else if (DismissDirection
+                                                  .endToStart ==
+                                              dis) {
+                                            String transId = Provider.of<
+                                                        TransactionController>(
                                                     context,
                                                     listen: false)
                                                 .transactions[i]
                                                 .id;
-                                        await Provider.of<
-                                                    TransactionController>(
-                                                context,
-                                                listen: false)
-                                            .deleteTransaction(
-                                                itemId: widget.item['id'],
-                                                transId: transId);
-                                        Navigator.pop(context);
-                                      },
-                                      hasContent: true,
-                                      content:
-                                          'Are sure to delete ${Provider.of<TransactionController>(context, listen: false).transactions[i].id}');
-                                } else if (DismissDirection.endToStart == dis) {
-                                  String transId =
-                                      Provider.of<TransactionController>(
-                                              context,
-                                              listen: false)
-                                          .transactions[i]
-                                          .id;
 
-                                  Navigator.pushNamed(
-                                      context, Routes.TRANSACTION_FORM,
-                                      arguments: {
-                                        "isUpdate": true,
-                                        "itemId": widget.item['id'],
-                                        "transId": transId
-                                      });
-                                }
-                              },
-                              background: Container(
-                                color: Colors.red,
-                                padding: EdgeInsets.symmetric(horizontal: 30.w),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Icon(
-                                    Icons.delete_outline,
-                                    size: 30.sp,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              secondaryBackground: Container(
-                                color: lightColorScheme.primary,
-                                padding: EdgeInsets.symmetric(horizontal: 30.w),
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Icon(
-                                    Icons.edit_outlined,
-                                    size: 30.sp,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              child: Container(
-                                width: 375.w,
-                                height: 125.h,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 24.h, horizontal: 16.w),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(16.r),
-                                  ),
-                                ),
-                                child: Center(
-                                    child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 120.w,
-                                      height: 125.h,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            widget.item['name'],
-                                            style: cardTitleTextStyle,
+                                            Navigator.pushNamed(context,
+                                                Routes.TRANSACTION_FORM,
+                                                arguments: {
+                                                  "isUpdate": true,
+                                                  "itemId": widget.item['id'],
+                                                  "transId": transId
+                                                });
+                                          }
+                                        },
+                                        background: Container(
+                                          color: Colors.red,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 30.w),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Icon(
+                                              Icons.delete_outline,
+                                              size: 30.sp,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                          SharedWidget.box(0, 7.h),
-                                          Text(
-                                            widget.item['sku'],
-                                            style: cardSubtitleTextStyle,
+                                        ),
+                                        secondaryBackground: Container(
+                                          color: lightColorScheme.primary,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 30.w),
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Icon(
+                                              Icons.edit_outlined,
+                                              size: 30.sp,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                          Text(
-                                            widget.item['description'],
-                                            style: cardSubtitleTextStyle,
+                                        ),
+                                        child: Container(
+                                          width: 375.w,
+                                          height: 125.h,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 24.h, horizontal: 16.w),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(16.r),
+                                            ),
                                           ),
-                                          Expanded(
-                                              child: SharedWidget.box(0, 7.h)),
-                                          Text(
-                                            widget.item['price'],
-                                            style: cardPriceTextStyle,
-                                          ),
-                                        ],
+                                          child: Center(
+                                              child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SizedBox(
+                                                width: 120.w,
+                                                height: 125.h,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      widget.item['name'],
+                                                      style: cardTitleTextStyle,
+                                                    ),
+                                                    SharedWidget.box(0, 7.h),
+                                                    Text(
+                                                      widget.item['sku'],
+                                                      style:
+                                                          cardSubtitleTextStyle,
+                                                    ),
+                                                    Text(
+                                                      widget
+                                                          .item['description'],
+                                                      style:
+                                                          cardSubtitleTextStyle,
+                                                    ),
+                                                    Expanded(
+                                                        child: SharedWidget.box(
+                                                            0, 7.h)),
+                                                    Text(
+                                                      widget.item['price'],
+                                                      style: cardPriceTextStyle,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 80.w,
+                                                height: 125.h,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          Provider.of<TransactionController>(
+                                                                          context)
+                                                                      .transactions[
+                                                                          i]
+                                                                      .type ==
+                                                                  'Inbound'
+                                                              ? 'In Stock'
+                                                              : 'Out Stock',
+                                                          style:
+                                                              cardStatusTextStyle,
+                                                        ),
+                                                        SharedWidget.box(12.w),
+                                                        SvgPicture.asset(
+                                                          Provider.of<TransactionController>(
+                                                                          context)
+                                                                      .transactions[
+                                                                          i]
+                                                                      .type ==
+                                                                  'Inbound'
+                                                              ? "assets/icons/next_down.svg"
+                                                              : "assets/icons/next_up.svg",
+                                                          width: 8.w,
+                                                          height: 20.h,
+                                                          color: Provider.of<TransactionController>(
+                                                                          context)
+                                                                      .transactions[
+                                                                          i]
+                                                                      .type ==
+                                                                  'Inbound'
+                                                              ? Colors
+                                                                  .greenAccent
+                                                              : Colors.red,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Text(
+                                                      Provider.of<TransactionController>(
+                                                                      context)
+                                                                  .transactions[
+                                                                      i]
+                                                                  .type ==
+                                                              "Inbound"
+                                                          ? Provider.of<
+                                                                      TransactionController>(
+                                                                  context)
+                                                              .transactions[i]
+                                                              .inboundAt
+                                                              .substring(0, 10)
+                                                          : Provider.of<
+                                                                      TransactionController>(
+                                                                  context)
+                                                              .transactions[i]
+                                                              .outboundAt
+                                                              .substring(0, 10),
+                                                      style:
+                                                          cardSubtitleTextStyle,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          )),
+                                        ),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 80.w,
-                                      height: 125.h,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                Provider.of<TransactionController>(
-                                                                context)
-                                                            .transactions[i]
-                                                            .type ==
-                                                        "Inbound"
-                                                    ? 'Inbound'
-                                                    : 'Outbound',
-                                                style: cardStatusTextStyle,
-                                              ),
-                                              SharedWidget.box(12.w),
-                                              SvgPicture.asset(
-                                                Provider.of<TransactionController>(
-                                                                context)
-                                                            .transactions[i]
-                                                            .type ==
-                                                        "Inbound"
-                                                    ? "assets/icons/next_down.svg"
-                                                    : "assets/icons/next_up.svg",
-                                                width: 8.w,
-                                                height: 20.h,
-                                                color:
-                                                    Provider.of<TransactionController>(
-                                                                    context)
-                                                                .transactions[i]
-                                                                .type ==
-                                                            "Inbound"
-                                                        ? Colors.greenAccent
-                                                        : Colors.red,
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            Provider.of<TransactionController>(
-                                                            context)
-                                                        .transactions[i]
-                                                        .type ==
-                                                    "Inbound"
-                                                ? Provider.of<
-                                                            TransactionController>(
-                                                        context)
-                                                    .transactions[i]
-                                                    .inboundAt
-                                                    .substring(0, 10)
-                                                : Provider.of<
-                                                            TransactionController>(
-                                                        context)
-                                                    .transactions[i]
-                                                    .outboundAt
-                                                    .substring(0, 10),
-                                            style: cardSubtitleTextStyle,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                )),
+                                  );
+                                },
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
                   ),
                 ),
               ),
