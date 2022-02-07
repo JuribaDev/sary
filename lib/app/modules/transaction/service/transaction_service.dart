@@ -11,12 +11,14 @@ class TransactionService {
     try {
       Box<TransactionModel> trans = await openBox();
       trans.add(TransactionModel(
-          id: transactionModel.id,
-          type: transactionModel.type,
-          itemId: transactionModel.itemId,
-          quantity: transactionModel.quantity,
-          inboundAt: transactionModel.inboundAt,
-          outboundAt: transactionModel.outboundAt));
+        id: transactionModel.id,
+        type: transactionModel.type,
+        itemId: transactionModel.itemId,
+        quantity: transactionModel.quantity,
+        inboundAt: transactionModel.inboundAt,
+        outboundAt: transactionModel.outboundAt,
+        transName: transactionModel.transName,
+      ));
       return const Left('Transaction added successfully');
     } catch (e) {
       return Right(CacheFailure(message: 'Error'));
@@ -47,12 +49,14 @@ class TransactionService {
       trans.put(
         index,
         TransactionModel(
-            id: transactionModel.id,
-            type: transactionModel.type,
-            itemId: transactionModel.itemId,
-            quantity: transactionModel.quantity,
-            inboundAt: transactionModel.inboundAt,
-            outboundAt: transactionModel.outboundAt),
+          id: transactionModel.id,
+          type: transactionModel.type,
+          itemId: transactionModel.itemId,
+          quantity: transactionModel.quantity,
+          inboundAt: transactionModel.inboundAt,
+          outboundAt: transactionModel.outboundAt,
+          transName: transactionModel.transName,
+        ),
       );
       return const Left('Transaction updated successfully');
     } catch (e) {
@@ -79,6 +83,37 @@ class TransactionService {
       Box<TransactionModel> trans = await openBox();
       List<TransactionModel> getTrans =
           trans.values.where((trans) => trans.itemId == itemId).toList();
+      return Left(getTrans);
+    } catch (e) {
+      return Right(CacheFailure(message: 'Error'));
+    }
+  }
+
+  static Future<Either<List<TransactionModel>, CacheFailure>> searchByName(
+      {required String itemId, required String transName}) async {
+    try {
+      Box<TransactionModel> trans = await openBox();
+      List<TransactionModel> getTrans = trans.values
+          .where((trans) =>
+              trans.itemId == itemId && trans.transName.contains(transName))
+          .toList();
+
+      return Left(getTrans);
+    } catch (e) {
+      return Right(CacheFailure(message: 'Error'));
+    }
+  }
+
+
+  static Future<Either<List<TransactionModel>, CacheFailure>> filterByTransactionType(
+      {required String itemId, required String transType}) async {
+    try {
+      Box<TransactionModel> trans = await openBox();
+      List<TransactionModel> getTrans = trans.values
+          .where((trans) =>
+              trans.itemId == itemId && trans.type.contains(transType))
+          .toList();
+
       return Left(getTrans);
     } catch (e) {
       return Right(CacheFailure(message: 'Error'));

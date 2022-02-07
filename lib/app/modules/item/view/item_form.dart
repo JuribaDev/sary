@@ -74,11 +74,11 @@ class _ItemFormState extends State<ItemFormView> {
               child: SingleChildScrollView(
                 reverse: true,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
                   child: Center(
                     child: Column(
                       children: [
-                        SharedWidget.box(0, 80.h),
+                        SharedWidget.box(0, 20.h),
                         SharedWidget.textForm(
                           controller: nameController,
                           labelText: 'Name',

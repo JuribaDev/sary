@@ -22,13 +22,18 @@ class TransactionModel extends HiveObject {
   @HiveField(5)
   final String outboundAt;
 
+  @HiveField(6)
+  final String transName;
+
   TransactionModel(
       {required this.id,
       required this.type,
       required this.itemId,
       required this.quantity,
       required this.inboundAt,
-      required this.outboundAt});
+      required this.outboundAt,
+      required this.transName,
+      });
 
 
     Map<String, dynamic> toMap() => {
@@ -38,6 +43,7 @@ class TransactionModel extends HiveObject {
         "quantity": quantity,
         "inbound_at": inboundAt,
         "outbound_at": outboundAt,
+        "trans_name": transName,
       };
 }
 /*

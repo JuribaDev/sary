@@ -133,7 +133,7 @@ class SharedWidget {
                           height: 20.h,
                         ),
                         label: Text(
-                          'Send',
+                          'Outbound',
                           style: buttonTextStyle,
                         ),
                       ),
@@ -158,7 +158,7 @@ class SharedWidget {
                           height: 20.h,
                         ),
                         label: Text(
-                          'Receive',
+                          'Inbound',
                           style: buttonTextStyle,
                         ),
                       ),
@@ -280,6 +280,28 @@ class SharedWidget {
           height: 20.h,
         ),
         label: Text(
+          buttonLabel,
+          style: buttonTextStyle,
+        ),
+      ),
+    );
+  }
+
+  static Widget buttonWithOutIcon(
+      {required VoidCallback onPressed, required String buttonLabel}) {
+    return SizedBox(
+      width: double.infinity,
+      height: 62.h,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
           buttonLabel,
           style: buttonTextStyle,
         ),

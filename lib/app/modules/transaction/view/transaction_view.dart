@@ -9,6 +9,7 @@ import 'package:sary/app/common/style/text_style.dart';
 import 'package:sary/app/common/widget/shared_widget.dart';
 import 'package:sary/app/modules/transaction/controller/transaction_controller.dart';
 import 'package:sary/app/modules/transaction/view/transaction_shared_widget.dart';
+import 'package:sary/app/modules/transaction/view/transaction_shared_widget.dart';
 import 'package:sary/app/routes/app_routes.dart';
 
 class TransactionView extends StatefulWidget {
@@ -20,25 +21,24 @@ class TransactionView extends StatefulWidget {
 }
 
 class _TransactionViewState extends State<TransactionView> {
-  late TextEditingController searchController;
+  String query = '';
 
   @override
   void initState() {
     log(widget.item.toString());
     Provider.of<TransactionController>(context, listen: false)
         .getTransactions(itemId: widget.item['id']);
-    searchController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<TransactionController>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -57,8 +57,14 @@ class _TransactionViewState extends State<TransactionView> {
         ),
         body: SharedWidget.floatingButton(
           isOneButton: false,
-          onFirstButtonPressed: () {},
-          onSecondButtonPressed: () {},
+          onFirstButtonPressed: () => controller.searchOrFilter(
+              operationType: OperationType.filterByInbound,
+              itemId: widget.item['id'],
+              query: "Outbound"),
+          onSecondButtonPressed: () => controller.searchOrFilter(
+              operationType: OperationType.filterByInbound,
+              itemId: widget.item['id'],
+              query: "Inbound"),
           child: Column(
             children: [
               SharedWidget.box(0, 21.h),
@@ -68,12 +74,29 @@ class _TransactionViewState extends State<TransactionView> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Expanded(
-                      child: TransactionSharedWidget.customTextForm(
-                          controller: searchController,
-                          onChanged: (val) {},
-                          onIconButtonPressed: () {})),
+                      child: Form(
+                    child: TransactionSharedWidget.customTextForm(
+                        onChanged: (val) {
+                      query = val;
+                      controller.searchOrFilter(
+                          operationType: OperationType.search,
+                          query: query,
+                          itemId: widget.item['id']);
+                    }, onIconButtonPressed: () {
+                      controller.searchOrFilter(
+                          operationType: OperationType.search,
+                          query: query,
+                          itemId: widget.item['id']);
+                    }),
+                  )),
                   SharedWidget.box(8.w),
-                  TransactionSharedWidget.circlerFilterButton(onPressed: () {})
+                  TransactionSharedWidget.circlerFilterButton(
+                      onPressed: () => SharedWidget.bottomSheet(
+                          context: context,
+                          child: FilterWidget(
+                          
+                            context: context,
+                          )))
                 ]),
               ),
               SharedWidget.box(0, 21.h),
@@ -144,7 +167,7 @@ class _TransactionViewState extends State<TransactionView> {
                                                 },
                                                 hasContent: true,
                                                 content:
-                                                    'Are sure to delete Transaction ID: ${Provider.of<TransactionController>(context, listen: false).transactions[i].id}');
+                                                    'Are sure to delete Transaction: ${Provider.of<TransactionController>(context, listen: false).transactions[i].transName}');
                                           } else if (DismissDirection
                                                   .endToStart ==
                                               dis) {
@@ -214,7 +237,10 @@ class _TransactionViewState extends State<TransactionView> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      widget.item['name'],
+                                                      Provider.of<TransactionController>(
+                                                              context)
+                                                          .transactions[i]
+                                                          .transName,
                                                       style: cardTitleTextStyle,
                                                     ),
                                                     SharedWidget.box(0, 7.h),

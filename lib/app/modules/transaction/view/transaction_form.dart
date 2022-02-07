@@ -5,13 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sary/app/common/colors/light_theme_color.dart';
-import 'package:sary/app/common/native_plugn/custom_toast_message.dart';
 import 'package:sary/app/common/style/text_style.dart';
 import 'package:sary/app/common/util/date_time_format.dart';
 
 import 'package:sary/app/common/widget/shared_widget.dart';
-import 'package:sary/app/modules/item/controller/item_controller.dart';
-import 'package:sary/app/modules/item/model/item_model.dart';
 import 'package:sary/app/modules/transaction/controller/transaction_controller.dart';
 import 'package:sary/app/modules/transaction/model/transaction_model.dart';
 import 'package:sary/app/modules/transaction/view/transaction_shared_widget.dart';
@@ -34,6 +31,7 @@ class _ItemFormState extends State<TransactionFormView> {
   DateTime? dateTime;
   int _radioValue = 1;
   var typeController = TextEditingController();
+  var tranNameController = TextEditingController();
   var quantityController = TextEditingController();
   var inboundAtController = TextEditingController();
   var outboundAtController = TextEditingController();
@@ -41,6 +39,7 @@ class _ItemFormState extends State<TransactionFormView> {
   @override
   void initState() {
     typeController = TextEditingController(text: 'Inbound');
+    tranNameController = TextEditingController();
     quantityController = TextEditingController();
     inboundAtController = TextEditingController();
     outboundAtController = TextEditingController();
@@ -58,6 +57,7 @@ class _ItemFormState extends State<TransactionFormView> {
             TextEditingController(text: transactionModel.inboundAt.toString());
         outboundAtController =
             TextEditingController(text: transactionModel.outboundAt.toString());
+        tranNameController.text = transactionModel.transName;
       });
     }
     super.initState();
@@ -91,7 +91,7 @@ class _ItemFormState extends State<TransactionFormView> {
                   child: Center(
                     child: Column(
                       children: [
-                        SharedWidget.box(0, 40.h),
+                        SharedWidget.box(0, 30.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -186,14 +186,30 @@ class _ItemFormState extends State<TransactionFormView> {
                           SharedWidget.box(0, 10.h),
                         ],
                         SharedWidget.textForm(
+                          controller: tranNameController,
+                          labelText: 'Transaction Name',
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return "Transaction Name";
+                            }
+                          },
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (val) {
+                            tranNameController.text = val;
+                          },
+                          textInputType: TextInputType.text,
+                          obscureText: false,
+                        ),
+                        SharedWidget.box(0, 10.h),
+                        SharedWidget.textForm(
                           controller: quantityController,
                           labelText: 'Quantity',
-                          textInputFormatter: FilteringTextInputFormatter.digitsOnly,
+                          textInputFormatter:
+                              FilteringTextInputFormatter.digitsOnly,
                           validator: (val) {
                             if (val!.isEmpty) {
                               return "Enter the Quantity";
                             }
-                           
                           },
                           textInputAction: TextInputAction.next,
                           onFieldSubmitted: (val) {
@@ -218,14 +234,15 @@ class _ItemFormState extends State<TransactionFormView> {
                                           itemId: widget.itemId,
                                           transId: widget.transId!,
                                           trans: TransactionModel(
-                                              id: widget.transId!,
-                                              type: typeController.text,
-                                              itemId: widget.itemId,
-                                              quantity: quantityController.text,
-                                              inboundAt:
-                                                  inboundAtController.text,
-                                              outboundAt:
-                                                  outboundAtController.text));
+                                            id: widget.transId!,
+                                            type: typeController.text,
+                                            itemId: widget.itemId,
+                                            quantity: quantityController.text,
+                                            inboundAt: inboundAtController.text,
+                                            outboundAt:
+                                                outboundAtController.text,
+                                            transName: tranNameController.text,
+                                          ));
                                 } else {
                                   Provider.of<TransactionController>(context,
                                           listen: false)
@@ -239,13 +256,16 @@ class _ItemFormState extends State<TransactionFormView> {
                                               inboundAt:
                                                   inboundAtController.text,
                                               outboundAt:
-                                                  outboundAtController.text));
+                                                  outboundAtController.text,
+                                              transName:
+                                                  tranNameController.text));
                                 }
                                 Navigator.pop(context);
                                 typeController.clear();
                                 quantityController.clear();
                                 inboundAtController.clear();
                                 outboundAtController.clear();
+                                tranNameController.clear();
                               }
                             }),
                       ],

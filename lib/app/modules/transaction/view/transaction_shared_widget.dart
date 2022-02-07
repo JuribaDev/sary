@@ -1,16 +1,27 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sary/app/common/colors/light_theme_color.dart';
 import 'package:sary/app/common/style/text_style.dart';
+import 'package:sary/app/common/widget/shared_widget.dart';
 
 class TransactionSharedWidget {
   static Widget customTextForm(
-      {required TextEditingController controller,
+      {TextEditingController? controller,
       required ValueChanged<String> onChanged,
+      String? initialValue,
+      FormFieldValidator<String>? validator,
       required VoidCallback onIconButtonPressed}) {
     return TextFormField(
       controller: controller,
       onChanged: onChanged,
+      validator: validator,
+      initialValue: initialValue,
+      style: transactionDetailTitleTextStyle,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         prefixIcon: IconButton(
           onPressed: onIconButtonPressed,
@@ -69,20 +80,16 @@ class TransactionSharedWidget {
         ));
   }
 
-
-      static Future<DateTime?> pickDate(
+  static Future<DateTime?> pickDate(
       BuildContext context, DateTime? dateTime) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
       context: context,
-      
       initialDate: dateTime ?? initialDate,
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
     );
-
     if (newDate == null) return null;
-
     return newDate;
   }
 
@@ -95,9 +102,156 @@ class TransactionSharedWidget {
           ? TimeOfDay(hour: dateTime.hour, minute: dateTime.minute)
           : initialTime,
     );
-
     if (newTime == null) return null;
-
     return newTime;
+  }
+}
+
+class FilterWidget extends StatefulWidget {
+  FilterWidget({
+    Key? key,
+    required this.context,
+  }) : super(key: key);
+  BuildContext context;
+  @override
+  State<FilterWidget> createState() => _FilterWidgetState();
+}
+
+class _FilterWidgetState extends State<FilterWidget> {
+  var startDateController;
+  var endDateController;
+  RangeValues _rangeSliderDiscreteValues = const RangeValues(1, 1000);
+  @override
+  void initState() {
+    startDateController = TextEditingController();
+    endDateController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 600.h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
+        border: Border.all(color: lightColorScheme.primary, width: 0.3.w),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 14.w),
+        child: Column(
+          children: [
+            Icon(
+              Icons.keyboard_arrow_down_rounded,
+              size: 35.sp,
+              color: lightColorScheme.primary,
+            ),
+            SharedWidget.box(0, 20.h),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Filter By Quantity',
+                style: transactionDetailDatetimeTextStyle,
+              ),
+            ),
+            SharedWidget.box(0, 10.h),
+            RangeSlider(
+              values: _rangeSliderDiscreteValues,
+              min: 0,
+              max: 1000,
+              divisions: 1000,
+              labels: RangeLabels(
+                _rangeSliderDiscreteValues.start.round().toString(),
+                _rangeSliderDiscreteValues.end.round().toString(),
+              ),
+              onChanged: (values) {
+                setState(() {
+                  _rangeSliderDiscreteValues = values;
+                });
+                log(_rangeSliderDiscreteValues.start.toString());
+              },
+            ),
+            SharedWidget.box(0, 20.h),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Filter By Date created',
+                style: transactionDetailDatetimeTextStyle,
+              ),
+            ),
+            SharedWidget.box(0, 10.h),
+            Container(
+              child: SharedWidget.textForm(
+                onTap: () async {
+                  // .start.toString().substring(0, 10)
+                  var val = await pickDateRange(context);
+
+                  startDateController.text =
+                      val.start.toString().substring(0, 10);
+                  endDateController.text = val.end.toString().substring(0, 10);
+                },
+                readOnly: true,
+                controller: startDateController,
+                labelText: 'Satart Date At',
+                validator: (val) {
+                  if (val!.isEmpty) {}
+                },
+                textInputAction: TextInputAction.next,
+                obscureText: false,
+              ),
+            ),
+            SharedWidget.box(0, 10.h),
+            Container(
+              child: SharedWidget.textForm(
+                onTap: () async {
+                  var val = await pickDateRange(context);
+                  startDateController.text =
+                      val.start.toString().substring(0, 10);
+                  endDateController.text = val.end.toString().substring(0, 10);
+                },
+                readOnly: true,
+                controller: endDateController,
+                labelText: 'End Date At',
+                validator: (val) {
+                  if (val!.isEmpty) {}
+                },
+                textInputAction: TextInputAction.next,
+                obscureText: false,
+              ),
+            ),
+            SharedWidget.box(0, 10.h),
+            SharedWidget.buttonWithOutIcon(
+                onPressed: () {}, buttonLabel: 'Filter'),
+            Expanded(child: SharedWidget.box(0, 30.h)),
+            SharedWidget.buttonWithOutIcon(
+                onPressed: () {}, buttonLabel: 'Clean Filters'),
+            SharedWidget.box(0, 10.h)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future pickDateRange(BuildContext context) async {
+    DateTimeRange? newDateRange = await showDateRangePicker(
+        context: context,
+        firstDate: DateTime(DateTime.now().year - 10),
+        lastDate: DateTime.now(),
+        initialDateRange: DateTimeRange(
+          start: DateTime.now(),
+          end: DateTime.now(),
+        ));
+
+    if (newDateRange == null) {
+      return DateTimeRange(
+        start: DateTime(DateTime.now().year - 1),
+        end: DateTime.now(),
+      );
+    }
+
+    return newDateRange;
   }
 }
