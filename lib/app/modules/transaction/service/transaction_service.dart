@@ -98,7 +98,7 @@ class TransactionService {
       Box<TransactionModel> trans = await openBox();
       List<TransactionModel> getTrans = trans.values
           .where((trans) =>
-              trans.itemId == itemId && trans.transName.contains(transName))
+              trans.itemId == itemId && trans.transName.toLowerCase().contains(transName.toLowerCase()))
           .toList();
 
       return Left(getTrans);
